@@ -105,6 +105,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDry: 1
+  dryBranchSound: {fileID: 8300000, guid: 1644fb01d0128254caca3419c67e2b14, type: 3}
+  healthyBranchSound: {fileID: 8300000, guid: 66d10179551ed3f41a9b5e8b32db376a, type: 3}
 --- !u!61 &5619599468021683399
 BoxCollider2D:
   m_ObjectHideFlags: 0

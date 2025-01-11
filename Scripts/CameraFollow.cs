@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour
 
     void Update()
     {
-        // Движи камерата нагоре с постоянна скорост
+        // Camere moving up whit const speed
         transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
     }
     public void IncreaseSpeed(float amount)

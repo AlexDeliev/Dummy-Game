@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 public class TreeGrower : MonoBehaviour
 {
-    public GameObject treeSegmentPrefab; // Префаб за сегментите на дървото
-    public Transform cameraTransform;   // Камерата, която следим
-    public float segmentHeight = 1f;    // Височината на един сегмент
-    public int initialSegments = 5;     // Брой сегменти в началото
-    public float bufferZone = 2f;       // Допълнително пространство над камерата
-    public BranchSpawner branchSpawner; // Референция към BranchSpawner
+    public GameObject treeSegmentPrefab; 
+    public Transform cameraTransform;   
+    public float segmentHeight = 1f;    
+    public int initialSegments = 5;     
+    public float bufferZone = 2f;       
+    public BranchSpawner branchSpawner; 
 
-    private List<GameObject> treeSegments = new List<GameObject>(); // Списък със сегменти
-    private float highestPoint;         // Най-високата точка на дървото
+    private List<GameObject> treeSegments = new List<GameObject>(); // List of segments
+    private float highestPoint;        
 
     void Start()
     {
-        // Създаваме началните сегменти
+        // Creating initial segments
         for (int i = 0; i < initialSegments; i++)
         {
             AddSegment(i * segmentHeight);
@@ -25,30 +25,30 @@ public class TreeGrower : MonoBehaviour
 
     void Update()
     {
-        // Проверяваме дали трябва да добавим нов сегмент
+        // Checking if we need to add a new segment
         if (cameraTransform.position.y + bufferZone > highestPoint)
         {
             AddSegment(highestPoint);
         }
 
-        // Премахваме старите сегменти, ако са под камерата
+        // Removing old segments
         RemoveOldSegments();
     }
 
     void AddSegment(float yPosition)
     {
-        // Създаваме нов сегмент
+        // Creating a new segment
         GameObject newSegment = Instantiate(treeSegmentPrefab, new Vector3(0, yPosition, 0), Quaternion.identity);
         treeSegments.Add(newSegment);
         highestPoint = yPosition + segmentHeight;
 
-        // Спаунваме клони за този сегмент
+        // Spawning branches
         branchSpawner.SpawnBranches(yPosition);
     }
 
     void RemoveOldSegments()
     {
-        // Премахваме сегменти, които са под камерата
+        // Removing segments that are below the camera
         float cameraBottom = cameraTransform.position.y - bufferZone;
         for (int i = treeSegments.Count - 1; i >= 0; i--)
         {

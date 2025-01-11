@@ -3,80 +3,80 @@ using System.Collections.Generic;
 
 public class BranchSpawner : MonoBehaviour
 {
-    public GameObject healthyBranchPrefab;  // Префаб за здрав клон
-    public GameObject dryBranchPrefab;      // Префаб за изсъхнал клон
-    public float branchOffset = 2f;         // Разстояние на клоните от центъра
-    public int branchFrequency = 2;         // На всеки колко сегмента да има клони
-    public Transform cameraTransform;       // Камерата, която следим
-    public float bufferZone = 2f;           // Допълнително пространство под камерата
+    public GameObject healthyBranchPrefab;  
+    public GameObject dryBranchPrefab;      
+    public float branchOffset = 2f;        
+    public int branchFrequency = 2;         
+    public Transform cameraTransform;       
+    public float bufferZone = 2f;           
 
-    private int segmentCounter = 0;         // Брояч на сегментите
-    private List<GameObject> branches = new List<GameObject>(); // Списък с всички клони
+    private int segmentCounter = 0;         
+    private List<GameObject> branches = new List<GameObject>(); 
 
     public void SpawnBranches(float yPosition)
-{
-    // Увеличаваме брояча на сегментите
-    segmentCounter++;
-
-    // Добавяме клони само на всеки N-ти сегмент
-    if (segmentCounter % branchFrequency == 0)
     {
-        // Избираме на случаен принцип кой клон да е отляво и кой отдясно
-        bool isHealthyLeft = Random.value > 0.5f;
+        // Increase the segment counter
+        segmentCounter++;
 
-        // Позиции за клоните
-        Vector3 leftBranchPosition = new Vector3(-branchOffset, yPosition, 0);
-        Vector3 rightBranchPosition = new Vector3(branchOffset, yPosition, 0);
-
-        // Създаваме клоните и ги добавяме в списъка
-        if (isHealthyLeft)
+        // Add branches to the tree on evry 3th segment
+        if (segmentCounter % branchFrequency == 0)
         {
-            // Здрав клон отляво, изсъхнал клон отдясно
-            GameObject leftBranch = Instantiate(healthyBranchPrefab, leftBranchPosition, Quaternion.identity);
-            GameObject rightBranch = Instantiate(dryBranchPrefab, rightBranchPosition, Quaternion.identity);
+            // Randomize the health of the branches
+            bool isHealthyLeft = Random.value > 0.5f;
 
-            // Флипваме десния клон
-            FlipBranch(rightBranch, true);
-            branches.Add(leftBranch);
-            branches.Add(rightBranch);
+            // Calculate the position of the branches
+            Vector3 leftBranchPosition = new Vector3(-branchOffset, yPosition, 0);
+            Vector3 rightBranchPosition = new Vector3(branchOffset, yPosition, 0);
+
+            // Spawn the branches
+            if (isHealthyLeft)
+            {
+                // Healthy branch on the left, dry branch on the right
+                GameObject leftBranch = Instantiate(healthyBranchPrefab, leftBranchPosition, Quaternion.identity);
+                GameObject rightBranch = Instantiate(dryBranchPrefab, rightBranchPosition, Quaternion.identity);
+
+                // Flip the right branch
+                FlipBranch(rightBranch, true);
+                branches.Add(leftBranch);
+                branches.Add(rightBranch);
+            }
+            else
+            {
+                // Dry branch on the left, healthy branch on the right
+                GameObject leftBranch = Instantiate(dryBranchPrefab, leftBranchPosition, Quaternion.identity);
+                GameObject rightBranch = Instantiate(healthyBranchPrefab, rightBranchPosition, Quaternion.identity);
+
+                // Flip the left branch
+                FlipBranch(rightBranch, true);
+                branches.Add(leftBranch);
+                branches.Add(rightBranch);
+            }
+        }
+    }
+
+    // Flip the branch method
+    void FlipBranch(GameObject branch, bool isRightSide)
+    {
+        if (isRightSide)
+        {
+            // flip the branch on x axis
+            Vector3 scale = branch.transform.localScale;
+            scale.x = -Mathf.Abs(scale.x); 
+            branch.transform.localScale = scale;
         }
         else
         {
-            // Изсъхнал клон отляво, здрав клон отдясно
-            GameObject leftBranch = Instantiate(dryBranchPrefab, leftBranchPosition, Quaternion.identity);
-            GameObject rightBranch = Instantiate(healthyBranchPrefab, rightBranchPosition, Quaternion.identity);
-
-            // Флипваме десния клон
-            FlipBranch(rightBranch, true);
-            branches.Add(leftBranch);
-            branches.Add(rightBranch);
+            // flip the branch on x axis if it is on the left side
+            Vector3 scale = branch.transform.localScale;
+            scale.x = Mathf.Abs(scale.x);
+            branch.transform.localScale = scale;
         }
     }
-}
-
-// Метод за флипване на клони
-void FlipBranch(GameObject branch, bool isRightSide)
-{
-    if (isRightSide)
-    {
-        // Флипваме клона по оста X
-        Vector3 scale = branch.transform.localScale;
-        scale.x = -Mathf.Abs(scale.x); // Уверяваме се, че X е отрицателен
-        branch.transform.localScale = scale;
-    }
-    else
-    {
-        // Уверяваме се, че клонът отляво има положителен X
-        Vector3 scale = branch.transform.localScale;
-        scale.x = Mathf.Abs(scale.x);
-        branch.transform.localScale = scale;
-    }
-}
 
 
     void Update()
     {
-        // Премахваме клоните, които са под камерата
+        // Remove old branches
         RemoveOldBranches();
     }
 
@@ -88,8 +88,8 @@ void FlipBranch(GameObject branch, bool isRightSide)
         {
             if (branches[i].transform.position.y < cameraBottom)
             {
-                Destroy(branches[i]);       // Унищожаваме клона
-                branches.RemoveAt(i);      // Премахваме го от списъка
+                Destroy(branches[i]);       // Destroy the branch
+                branches.RemoveAt(i);      // Remove the branch from the list
             }
         }
     }

@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 40e64232cd37b154fb1e8655a3a5ab57
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - dryBranchSound: {fileID: 8300000, guid: 1644fb01d0128254caca3419c67e2b14, type: 3}
+  - healthyBranchSound: {fileID: 8300000, guid: 66d10179551ed3f41a9b5e8b32db376a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

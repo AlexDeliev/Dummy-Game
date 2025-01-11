@@ -2,21 +2,21 @@ using UnityEngine;
 
 public class SawMovement : MonoBehaviour
 {
-    public Transform cameraTransform; // Камерата, която следим
-    public float treeWidth = 2f;      // Половината ширина на дървото
-    public float yOffset = -2f;       // Офсет по Y
+    public Transform cameraTransform; 
+    public float treeWidth = 2f;      
+    public float yOffset = -2f;       
 
-    private bool isOnLeftSide = true; // Позиция на резачката (ляво или дясно)
+    private bool isOnLeftSide = true; 
 
     void LateUpdate()
     {
-        // Резачката следва камерата с офсет по Y
+        // Fallow the camera on Y axis
         Vector3 newPosition = transform.position;
         newPosition.y = cameraTransform.position.y + yOffset;
         transform.position = newPosition;
 
-        // Смяна на страната при клик
-        if (Input.GetMouseButtonDown(0)) // Ляв бутон на мишката
+        // Flip the saw if the player clicks
+        if (Input.GetMouseButtonDown(0)) 
         {
             ToggleSide();
         }
@@ -24,30 +24,30 @@ public class SawMovement : MonoBehaviour
 
     void ToggleSide()
     {
-        // Променя страната на резачката
+        // Move to the right side
         if (isOnLeftSide)
         {
-            // Премести се вдясно
+            
             transform.position = new Vector3(treeWidth, transform.position.y, transform.position.z);
         }
         else
         {
-            // Премести се вляво
+            // Move to the left side
             transform.position = new Vector3(-treeWidth, transform.position.y, transform.position.z);
         }
 
-        // Флипни резачката
+        
         FlipSaw();
 
-        // Обнови текущата позиция
+        // Toggle the side
         isOnLeftSide = !isOnLeftSide;
     }
 
     void FlipSaw()
     {
-        // Флипва резачката по оста X
+        // Flip the saw
         Vector3 scale = transform.localScale;
-        scale.x *= -1; // Обръща знака на X
+        scale.x *= -1; 
         transform.localScale = scale;
     }
 }

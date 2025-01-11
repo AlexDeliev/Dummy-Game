@@ -8,10 +8,10 @@ public class PointSystem : MonoBehaviour
     public GameObject gameOverPanel; 
     private int score = 0; 
     public TMP_Text finalScoreText;
-    public CameraFollow cameraFollow; // Референция към скрипта за движение на камерата
-    private int speedIncreaseThreshold = 20; // Точки, при които се увеличава скоростта
-    private float speedMultiplier = 1.1f; // Увеличение на скоростта
-    private float reducedMultiplier = 1.05f; // По-малко увеличение след 40 точки
+    public CameraFollow cameraFollow; 
+    private int speedIncreaseThreshold = 20; 
+    private float speedMultiplier = 1.1f; 
+    private float reducedMultiplier = 1.05f; 
 
     
 
@@ -30,7 +30,7 @@ public class PointSystem : MonoBehaviour
         score += amount;
         UpdateScoreUI();
 
-        // Увеличаване на скоростта на камерата
+        // Increase Camera movement speed
         if (score % speedIncreaseThreshold == 0)
         {
             if (score <= 40)
